@@ -1,18 +1,14 @@
 import mysql from "mysql2";
+import dotenv from "dotenv";
 
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "agenda_user",
-  password: "agenda123",
-  database: "agenda_app"
-});
+dotenv.config();
 
-db.connect((err) => {
-  if (err) {
-    console.log("❌ Error conectando a MySQL:", err);
-  } else {
-    console.log("✅ Conectado a MySQL");
-  }
+const db = mysql.createPool({
+  host: process.env.MYSQLHOST,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE,
+  port: process.env.MYSQLPORT,
 });
 
 export default db;
