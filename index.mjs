@@ -14,11 +14,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// 🔹 CONEXIÓN A MYSQL (con PORT incluido)
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
+  port: process.env.DB_PORT, // 👈 añadido
 });
 
 db.connect((err) => {
@@ -33,7 +35,7 @@ app.get("/", (req, res) => {
   res.send("Backend funcionando");
 });
 
-// REGISTER
+// 🔹 REGISTRO
 app.post("/api/register", upload.none(), (req, res) => {
   const { email, password } = req.body;
 
@@ -60,7 +62,7 @@ app.post("/api/register", upload.none(), (req, res) => {
   );
 });
 
-// LOGIN
+// 🔹 LOGIN
 app.post("/api/login", (req, res) => {
   const { email, password } = req.body;
 
