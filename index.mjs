@@ -23,8 +23,8 @@ const db = mysql.createPool({
   port: process.env.MYSQLPORT,
 });
 
-// ✅ Test conexión + tabla
-(async () => {
+
+async function initDB() {
   try {
     await db.query(`
       CREATE TABLE IF NOT EXISTS users (
@@ -35,15 +35,18 @@ const db = mysql.createPool({
     `);
     console.log("✅ DB lista");
   } catch (err) {
-    console.error("❌ Error DB:", err);
+    console.error("❌ Error DB (reintentará):", err.message);
   }
-})();
+}
+
+setTimeout(initDB, 5000);
+
 
 app.get("/", (req, res) => {
   res.send("Backend funcionando");
 });
 
-// 🔹 REGISTRO
+
 app.post("/api/register", async (req, res) => {
   const { email, password } = req.body;
 
@@ -69,7 +72,7 @@ app.post("/api/register", async (req, res) => {
   }
 });
 
-// 🔹 LOGIN
+
 app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
 
